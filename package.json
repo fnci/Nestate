@@ -19,7 +19,9 @@
   "author": "Francisco José Jourdan",
   "license": "ISC",
   "dependencies": {
-    "pug": "^3.0.2"
+    "mysql2": "^3.3.1",
+    "pug": "^3.0.2",
+    "sequelize": "^6.31.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

@@ -4,6 +4,9 @@
 # does not ignore the README.md file
 !README.md
 
+
+# env variables
+*.env
 # Dependency directories
 node_modules
 node_modules/

@@ -1,9 +1,17 @@
 import express from "express";
 import router from "./routes/routes.js";
+import db from "./config/db.js";
 import * as dotenv from 'dotenv';
 
 const app = express();
 
+// Connection to the database
+try {
+    await db.authenticate();
+    console.log('db connected');
+} catch (error) {
+    console.log(error);
+}
 
 
 // Enable Pug
