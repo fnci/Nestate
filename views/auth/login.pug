@@ -2,5 +2,27 @@ extends ../layout/index
 
 
 block content
-    div
-        h2.text-center.text-2xl.font-extrabold Log In
+    .pt-6.pb-8
+        a(href="#")
+            .flex.flex-wrap.justify-center
+                img(class="image object-top object-scale-down h-42 w-96" src="/img/nestatelogo.png" alt="Nestate Logo").max-w-full.h-auto.align-middle.border-none
+        h2.text-center.text-2xl.pt-6.pb-0.font-medium.font-serif=pageTitle
+
+        .mt-2.mx-auto.max-w-md
+            .bg-white.py-4.px-4.shadow
+                form.space-y-2.font-serif
+
+                    div
+                        label(for="email").block.text-sm.text-gray-950.mb-2.font-medium E-mail address:
+                        input#email.w-full.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="you@example.com" type="email" name="email")
+                    div
+                        label(for="password").block.text-sm.text-gray-950.mb-2.font-medium Password:
+                        input#password.w-full.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="Password" type="password" name="password")
+
+                    div.flex.items-center.justify-between
+
+                        a(href="/auth/signup" class="text-xs text-gray-800 hover:text-gray-700") Don't have an account?
+                        a(href="/auth/forgot-password" class="text-xs text-gray-800 hover:text-gray-700") Forgot password?
+
+
+                    input(class='w-full py-2 rounded-sm cursor-pointer text-amber-50 bg-green-950 hover:bg-green-900' type="submit" value="Log in")
