@@ -10,20 +10,34 @@ block content
 
         .mt-2.mx-auto.max-w-md
             .bg-white.py-4.px-4.shadow
-                form.space-y-2.font-serif
+                form.space-y-2.font-serif(method="POST" action="/auth/signup" noValidate)
                     h2.text-center.text-2xl.font-medium.font-serif=pageTitle
+
+                    if errors
+                        div(class="max-w-md mx-auto my-8")
+                            each error in errors
+                                if(error.path!=="confirmPassword")
+                                    p.bg-red-600.text-white.rounded-sm.text-xs.text-center.p-2.mb-1.italic=error.msg
+
                     div
                         label(for="username").block.text-sm.text-gray-950.mb-2.font-medium Username:
-                        input#username.w-full.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="Username" type="text" name="username")
+                        input#username.w-full.text-sm.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="Username" type="text" name="username" value= user ? user.name : '' )
                     div
                         label(for="email" class="after:content-['*'] after:ml-0.5 after:text-red-700").block.text-sm.text-gray-950.mb-2.font-medium E-mail
-                        input#email.w-full.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="you@example.com" type="email" name="email")
+                        input#email.w-full.text-sm.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="user@example.com" type="email" name="email" value= user ? user.email : '')
                     div
                         label(for="password").block.text-sm.text-gray-950.mb-2.font-medium Password:
-                        input#password.w-full.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="Password" type="password" name="password")
-                    div
-                        label(for="confirmPassword").block.text-sm.text-gray-950.mb-2.font-medium Confirm Password:
-                        input#confirmPassword.w-full.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="Password confirmation" type="password" name="confirmPassword")
+                        input#password.w-full.text-sm.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="Password" type="password" name="password")
+                    div.flex.justify-between.items-center
+                        label(for="confirmPassword").text-sm.text-gray-950.font-medium Confirm Password:
+                        if errors
+                           each error in errors
+                                if (error.path==="confirmPassword")
+                                     p.text-red-600.text-sm.text-center=error.msg
+
+
+
+                    input#confirmPassword.w-full.text-sm.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="Password confirmation" type="password" name="confirmPassword")
 
                     div.flex.items-center.justify-end
                         a(href="/auth/login" class="text-xs text-gray-800 hover:text-gray-700") Already have an account?

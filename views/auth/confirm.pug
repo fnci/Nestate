@@ -1,0 +1,25 @@
+extends ../layout/index
+
+
+block content
+    .py-6.flex.justify-center
+        .wrap
+            a(href="#" class="flex justify-around" )
+
+                img(class="image object-top object-scale-down h-48 w-96" src="/img/nestatelogo.png" alt="Nestate Logo").max-w-full.h-auto.align-middle.border-none.pb-3
+
+
+            div(class="flex flex-col max-w-md bg-white shadow py-8 px-4 rounded-sm mx-auto items-center")
+
+
+                if(error)
+                    h2.text-center.text-2xl.font-bold.text-md.italic.font-serif.underline.decoration-double.decoration-red-600.underline-offset-2=page
+                    p.font-serif.font-normal.text-center.py-2.px-5.rounded-sm.text-md.no-underline.tracking-wide=message
+                        a(href='#' class="no-underline text-green-800 hover:text-green-500")
+                            p(class="text-lg font-serif font-semibold font-normal tracking-wide italic") please try again.
+                else
+                    h2.text-center.text-2xl.font-bold.text-md.italic.font-serif.underline.decoration-double.decoration-yellow-500.underline-offset-2=page
+                    p.font-serif.font-normal.text-center.py-2.px-5.rounded-sm.text-md.no-underline.tracking-wide=message
+                    p.font-serif.font-normal.text-center.py-2.px-5.rounded-sm.text-md.italic.no-underline.tracking-wide.italic Hey!!! A big, big welcome to Nestate! We hope you enjoy this space that we created for you, and we want you to have the best experience possible! That's our goal and now you're a part of it, we are thankful for that!
+                        a(href='/auth/login' class="no-underline text-sky-900 hover:text-sky-600")
+                            p(class="text-lg font-serif font-semibold font-normal tracking-wide italic") Now sign in here

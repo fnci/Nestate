@@ -2,12 +2,40 @@ import express from "express";
 import router from "./routes/routes.js";
 import db from "./config/db.js";
 import * as dotenv from 'dotenv';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+
 
 const app = express();
+
+
+// Read form
+app.use(express.urlencoded({extended: true}));
+app.use(cookieParser());
+
+const sessionConfig = {
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        // By default, the httpOnly attribute is set.
+        httpOnly: true,
+        // The expires option should not be set directly; instead only use the maxAge option
+        //  If both expires and maxAge are set in the options, then the last one defined in the object is what is used.
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        // Force the session identifier cookie to be set on every response.
+        /* rolling: true, */
+        /* secure: true, */
+    }
+}
+app.use(session(sessionConfig));
+
 
 // Connection to the database
 try {
     await db.authenticate();
+    db.sync();
     console.log('db connected');
 } catch (error) {
     console.log(error);
@@ -28,6 +56,7 @@ app.use('/auth', router);
 dotenv.config({ path: 'var.env' });
 
 // Add port
-app.listen(process.env.PORT, () => {
+const port = process.env.PORT || 4000;
+app.listen(port, () => {
     console.log('listening on port')
 });
