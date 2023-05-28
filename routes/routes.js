@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import {loginForm, signupForm, register, confirm, forgotPassword} from '../controllers/userController.js'
+import {loginForm, signupForm, register, confirm, forgotPassword, resetPassword, checkToken, newPassword} from '../controllers/userController.js'
 
 
 router.get('/login', loginForm);
@@ -12,6 +12,11 @@ router.post('/signup', register);
 router.get('/confirm/:token', confirm);
 
 router.get('/forgot-password', forgotPassword);
+router.post('/forgot-password', resetPassword);
+
+// Store the new password
+router.get('/forgot-password/:token', checkToken);
+router.post('/forgot-password/:token', newPassword);
 
 
 export default router;

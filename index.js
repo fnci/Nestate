@@ -2,8 +2,8 @@ import express from "express";
 import router from "./routes/routes.js";
 import db from "./config/db.js";
 import * as dotenv from 'dotenv';
+dotenv.config({ path: '.env' });
 import session from 'express-session';
-import cookieParser from 'cookie-parser';
 
 
 const app = express();
@@ -11,7 +11,6 @@ const app = express();
 
 // Read form
 app.use(express.urlencoded({extended: true}));
-app.use(cookieParser());
 
 const sessionConfig = {
     secret: process.env.SECRET,
@@ -53,7 +52,7 @@ app.use(express.static('public'))
 app.use('/auth', router);
 
 // Development Variables
-dotenv.config({ path: 'var.env' });
+dotenv.config({ path: '.env' });
 
 // Add port
 const port = process.env.PORT || 4000;
