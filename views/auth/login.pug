@@ -10,8 +10,17 @@ block content
 
         .mt-2.mx-auto.max-w-md
             .bg-white.py-4.px-4.shadow
-                form.space-y-2.font-serif
+                form.space-y-2.font-serif(method="POST" action="/auth/login")
+                    input(type="hidden" name="_csrf" value=csrfToken)
                     h2.text-center.text-2xl.font-medium.font-serif=pageTitle
+
+                    if errors
+                        div(class="max-w-md mx-auto my-8")
+                            each error in errors
+                                if(error.path!=="confirmPassword")
+                                    p.bg-red-600.text-white.rounded-sm.text-xs.text-center.p-2.mb-1.italic=error.msg
+
+
                     div
                         label(for="email").block.text-sm.text-gray-950.mb-2.font-medium E-mail address:
                         input#email.w-full.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="you@example.com" type="email" name="email")

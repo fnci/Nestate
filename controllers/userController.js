@@ -1,18 +1,59 @@
 import { check, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import User from '../models/User.js';
-import {idGen} from '../helpers/tokens.js';
+import {JWTGen, idGen} from '../helpers/tokens.js';
 import {registerEmail, passwordResetEmail} from '../helpers/emails.js';
 
 const loginForm = (req, res) => {
     res.render('auth/login', {
-        pageTitle: 'Log in'
+        pageTitle: 'Log in',
+        csrfToken: req.csrfToken()
     });
+}
+const authenticate = async (req, res) => {
+    await check('email').trim().isEmail().withMessage('Email is required.').run(req);
+    await check('password').notEmpty().withMessage('Password is required.').run(req);
+    let result = validationResult(req);
+    if(!result.isEmpty()) {
+        return res.render('auth/login', {
+            pageTitle: 'Log in',
+            errors: result.array(),
+        })
+    }
+    const {email, password} = req.body;
+    const user = await User.findOne({ where: {email}})
+    if(!user) {
+        return res.render('auth/login', {
+            pageTitle: 'Log in',
+            errors: [{msg: 'User doesn\'t exist.'}]
+        })
+    }
+    // Verify if the user is confirm
+    if(!user.confirm){
+        return res.render('auth/login', {
+            pageTitle: 'Log in',
+            errors: [{msg: 'The account hasn\'t been confirmed.'}]
+        })
+    }
+    // Check password
+    if(!user.verifyPassword(password)){
+        return res.render('auth/login', {
+            pageTitle: 'Log in',
+            errors: [{msg: 'Incorrect password.'}]
+        })
+    }
+    // Authenticate User
+     const token = JWTGen({id: user.id, username: user.username});
+     return res.cookie('_token', token, {
+        httpOnly: true,
+        /* secure: true */
+     }).redirect('/my-properties')
 }
 
 const signupForm = (req, res) => {
     res.render('auth/signup', {
-        pageTitle: 'Sign up'
+        pageTitle: 'Sign up',
+        csrfToken: req.csrfToken()
     });
 }
 
@@ -37,6 +78,7 @@ const register = async (req, res) => {
         // errors
         return res.render('auth/signup', {
             pageTitle: 'Sign up',
+            csrfToken: req.csrfToken(),
             errors: result.array(),
             user: {
                 name: req.body.username,
@@ -49,6 +91,7 @@ const register = async (req, res) => {
     if(userExists) {
         return res.render('auth/signup', {
             pageTitle: 'Sign up',
+            csrfToken: req.csrfToken(),
             errors: [{msg: 'This email is already in use.'}],
             user: {
                 name: req.body.username,
@@ -200,6 +243,7 @@ const newPassword = async (req, res) => {
 
 export {
     loginForm,
+    authenticate,
     signupForm,
     register,
     confirm,

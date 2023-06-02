@@ -11,6 +11,7 @@ block content
         .mt-2.mx-auto.max-w-md
             .bg-white.py-4.px-4.shadow
                 form.space-y-2.font-serif(method="POST" action="/auth/signup" noValidate)
+                    input(type="hidden" name="_csrf" value=csrfToken)
                     h2.text-center.text-2xl.font-medium.font-serif=pageTitle
 
                     if errors

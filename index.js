@@ -4,6 +4,8 @@ import db from "./config/db.js";
 import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env' });
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import csrf from 'csurf';
 
 
 const app = express();
@@ -11,6 +13,9 @@ const app = express();
 
 // Read form
 app.use(express.urlencoded({extended: true}));
+// Enable cookie-parser
+app.use(cookieParser());
+app.use(csrf({cookie: true}))
 
 const sessionConfig = {
     secret: process.env.SECRET,

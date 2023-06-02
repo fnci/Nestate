@@ -25,6 +25,9 @@ const User = db.define('User', {
         }
     }
 })
-
+User.prototype.verifyPassword = function(password) {
+    // This.password if the instance on the db
+    return bcrypt.compareSync(password, this.password)
+}
 
 export default User
